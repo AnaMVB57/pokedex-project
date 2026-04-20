@@ -1,0 +1,24 @@
+{
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4"
+  },
+  "name": "pokedex-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "undici-types": "^7.19.2"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "vitest --run",
+    "start": "node dist/main.js",
+    "dev": "npx tsc && node dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
