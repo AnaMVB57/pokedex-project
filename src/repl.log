@@ -2,10 +2,9 @@
 > pokedex-project@1.0.0 dev
 > npx tsc && node dist/main.js
 
-Pokedex > Unknown command
 Pokedex > Welcome to the Pokedex!
 Usage:
 
 exit: Exits the pokedex
 help: Displays a list of useful commands
-Pokedex > Closing Pokédex... Goodbye!
+Pokedex > Closing the Pokedex... Goodbye!
