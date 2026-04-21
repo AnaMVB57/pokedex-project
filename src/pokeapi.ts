@@ -1,20 +1,36 @@
+import { Cache } from "./cache/pokecache.js";
+
 export class PokeAPI {
   private static readonly baseUrl = "https://pokeapi.co/api/v2";
+  private cache: Cache;
 
-  constructor() {}
+  constructor(cacheInterval: number) {
+    this.cache = new Cache(cacheInterval);
+  }
+
+  closeCache(){
+    this.cache.stopReapLoop();
+  }
 
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const url = pageURL || `${PokeAPI.baseUrl}/location-area/`;
 
     try {
+      const cached = this.cache.get<ShallowLocations>(url);
+      if (cached){
+        return cached;
+      }
+
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error(`Failded to fetch locations: ${response.statusText}`);
+        throw new Error(`Failed to fetch locations: ${response.statusText}`);
       }
 
       const data: ShallowLocations = await response.json();
+      this.cache.add(url, data);
       return data;
+
     } catch (error) {
       throw new Error(`Error fetching locations: ${(error as Error).message}`);
     }
@@ -40,15 +56,22 @@ export class PokeAPI {
 }
 
 export type ShallowLocations = {
-  name: string | null;
-  url: string | null;
-  count: number | null;
+  count: number;
   next: string | null;
   previous: string | null;
-  results: ShallowLocations[] | null;
+  results: {
+    name: string;
+    url: string;
+  }[];
 };
 
 export type Location = {
-  id: number | null;
-  name: string | null;
-};
+  id: number;
+  name: string;
+  pokemon_encounters: {
+    pokemon: {
+      name: string;
+      url: string;
+    };
+  }[];
+}

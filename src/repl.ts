@@ -9,13 +9,13 @@ export function cleanInput(input: string): string[] {
 }
 
 export async function startREPL(state: State) {
-  state.rl.prompt();
+  state.readline.prompt();
 
-  state.rl.on("line", async (line: string) => {
+  state.readline.on("line", async (line: string) => {
     const words = cleanInput(line);
 
     if (words.length === 0) {
-      state.rl.prompt();
+      state.readline.prompt();
       return;
     }
 
@@ -23,7 +23,7 @@ export async function startREPL(state: State) {
 
     if (!command) {
       console.log("Unknown command. Type 'help' to know the available commands.");
-      state.rl.prompt();
+      state.readline.prompt();
       return;
     }
 
@@ -33,6 +33,6 @@ export async function startREPL(state: State) {
        console.log(e);
      }    
 
-    state.rl.prompt();
+    state.readline.prompt();
   });
 }

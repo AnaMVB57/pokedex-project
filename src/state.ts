@@ -1,6 +1,7 @@
 import { createInterface, type Interface } from "readline";
 import { getCommands } from "./commands/command_registry.js";
 import { PokeAPI } from "./pokeapi.js";
+import { colors } from "./assets/colors.js";
 
 export type CLICommand = {
   name: string;
@@ -9,26 +10,26 @@ export type CLICommand = {
 };
 
 export type State = {
-  rl: Interface;
+  readline: Interface;
   commands: Record<string, CLICommand>;
   pokeapi: PokeAPI;
   nextLocationsURL?: string | null;
   prevLocationsURL?: string | null;
 };
 
-export function initState(): State {
-  const rl = createInterface({
+export function initState(cacheInterval: number): State {
+  const readline = createInterface({
       input: process.stdin,
       output: process.stdout,
-      prompt: "Pokedex > ",
+      prompt: `${colors.bold}${colors.yellow}>> Pokedex ${colors.reset} `,
 });
 
    const commands = getCommands();
 
    return { 
-    rl,
+    readline,
     commands,
-    pokeapi: new PokeAPI(),
+    pokeapi: new PokeAPI(cacheInterval),
     nextLocationsURL: "",
     prevLocationsURL: "",
    };
