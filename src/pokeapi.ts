@@ -8,16 +8,16 @@ export class PokeAPI {
     this.cache = new Cache(cacheInterval);
   }
 
-  closeCache(){
+  closeCache() {
     this.cache.stopReapLoop();
   }
 
-  async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
+  async fetchShallowLocations(pageURL?: string): Promise<ShallowLocation> {
     const url = pageURL || `${PokeAPI.baseUrl}/location-area/`;
 
     try {
-      const cached = this.cache.get<ShallowLocations>(url);
-      if (cached){
+      const cached = this.cache.get<ShallowLocation>(url);
+      if (cached) {
         return cached;
       }
 
@@ -27,10 +27,9 @@ export class PokeAPI {
         throw new Error(`Failed to fetch locations: ${response.statusText}`);
       }
 
-      const data: ShallowLocations = await response.json();
+      const data: ShallowLocation = await response.json();
       this.cache.add(url, data);
       return data;
-
     } catch (error) {
       throw new Error(`Error fetching locations: ${(error as Error).message}`);
     }
@@ -40,22 +39,27 @@ export class PokeAPI {
     const url = `${PokeAPI.baseUrl}/location-area/${locationName}`;
 
     try {
+      const cached = this.cache.get<Location>(url);
+      if(cached){
+        return cached;
+      }
+
       const response = await fetch(url);
 
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error(`Failed to fetch location: ${response.statusText}`);
       }
 
       const data: Location = await response.json();
+      this.cache.add(url, data);
       return data;
-
     } catch (error) {
       throw new Error(`Error fetching location: ${(error as Error).message}`);
     }
   }
 }
 
-export type ShallowLocations = {
+export type ShallowLocation = {
   count: number;
   next: string | null;
   previous: string | null;
@@ -74,4 +78,4 @@ export type Location = {
       url: string;
     };
   }[];
-}
+};

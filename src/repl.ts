@@ -2,10 +2,10 @@ import type { State } from "./state.js";
 
 export function cleanInput(input: string): string[] {
   return input
-              .trim()
-              .toLowerCase()
-              .split(" ")
-              .filter(word => word !== "");
+    .trim()
+    .toLowerCase()
+    .split(" ")
+    .filter((word) => word !== "");
 }
 
 export async function startREPL(state: State) {
@@ -22,16 +22,18 @@ export async function startREPL(state: State) {
     const command = state.commands[words[0]];
 
     if (!command) {
-      console.log("Unknown command. Type 'help' to know the available commands.");
+      console.log(
+        "Unknown command. Type 'help' to know the available commands.",
+      );
       state.readline.prompt();
       return;
     }
 
     try {
-      await command.callback(state);
-     } catch (e) {
-       console.log(e);
-     }    
+      await command.callback(state, ...words.slice(1));
+    } catch (e) {
+      console.log(e);
+    }
 
     state.readline.prompt();
   });
