@@ -1,13 +1,17 @@
 import type { State } from "./state.js";
 
 export function cleanInput(input: string): string[] {
-  return input.trim().toLowerCase().split(/\s+/);
+  return input
+              .trim()
+              .toLowerCase()
+              .split(" ")
+              .filter(word => word !== "");
 }
 
-export function startREPL(state: State): void {
+export async function startREPL(state: State) {
   state.rl.prompt();
 
-  state.rl.on("line", (line: string) => {
+  state.rl.on("line", async (line: string) => {
     const words = cleanInput(line);
 
     if (words.length === 0) {
@@ -18,13 +22,13 @@ export function startREPL(state: State): void {
     const command = state.commands[words[0]];
 
     if (!command) {
-      console.log("Unknown command");
+      console.log("Unknown command. Type 'help' to know the available commands.");
       state.rl.prompt();
       return;
     }
 
     try {
-        command.callback(state);
+      await command.callback(state);
      } catch (e) {
        console.log(e);
      }    
