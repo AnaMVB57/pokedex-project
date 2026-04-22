@@ -1,3 +1,4 @@
+import { savePokedex } from "../pokedex.js";
 import { State } from "../state.js";
 
 export async function commandCatch(
@@ -30,6 +31,7 @@ export async function commandCatch(
     } else {
       console.log(`${pokemonName} was caught!`);
       state.pokedex[pokemonName] = pokemon;
+      savePokedex(state.pokedex);
       return;
     }
   } catch (error) {
