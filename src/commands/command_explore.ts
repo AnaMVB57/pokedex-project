@@ -5,21 +5,26 @@ export async function commandExplore(
   ...args: string[]
 ): Promise<void> {
   try {
+
     if (args.length === 0) {
       console.log("Please provide a location area name.");
       return;
     }
 
     const locationName = args[0];
+
     console.log(`Exploring ${locationName}...`);
 
     const location = await state.pokeapi.fetchLocation(locationName);
 
     console.log("Found Pokemon: ");
+    
     for (const encounter of location.pokemon_encounters) {
       console.log(` - ${encounter.pokemon.name}`);
     }
+
   } catch (error) {
+
     throw new Error(`Error fetching encounters: ${(error as Error).message}. Try again!`);
   }
 }

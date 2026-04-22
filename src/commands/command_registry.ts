@@ -1,4 +1,4 @@
-import { commandExit, commandMap, commandMapb, commandHelp, commandExplore } from "../command_list.js";
+import { commandExit, commandMap, commandMapb, commandHelp, commandExplore, commandCatch } from "../command_list.js";
 import type { CLICommand } from "../state.js";
 
 export function getCommands(): Record<string, CLICommand> {
@@ -27,6 +27,11 @@ export function getCommands(): Record<string, CLICommand> {
       name: "explore",
       description: "Shows the Pokemon of the zone",
       callback: commandExplore,
+    },
+    catch: {
+      name: "catch",
+      description: "Use it to catch Pokemon you encounter",
+      callback: commandCatch,
     },
   };
 }
