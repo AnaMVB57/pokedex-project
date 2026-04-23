@@ -32,15 +32,12 @@ export async function renderSprite(spriteUrl: string): Promise<void> {
         const ba = bottomPixel & 0xff;
 
         if (ta < 128 && ba < 128) {
-          line += " "; // ambos transparentes
+          line += " "; 
         } else if (ta < 128) {
-          // solo pixel inferior visible
           line += `\x1b[48;2;0;0;0m\x1b[38;2;${br};${bg};${bb}m▄\x1b[0m`;
         } else if (ba < 128) {
-          // solo pixel superior visible
           line += `\x1b[48;2;0;0;0m\x1b[38;2;${tr};${tg};${tb}m▀\x1b[0m`;
         } else {
-          // ambos visibles — fondo = pixel superior, frente = pixel inferior
           line += `\x1b[48;2;${tr};${tg};${tb}m\x1b[38;2;${br};${bg};${bb}m▄\x1b[0m`;
         }
       }
