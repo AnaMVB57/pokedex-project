@@ -8,6 +8,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "jimp": "^1.6.1",
+    "jpeg-js": "^0.4.4",
     "undici-types": "^7.19.2"
   },
   "type": "module",
